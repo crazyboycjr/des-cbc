@@ -190,17 +190,17 @@ inline u64 f(u64 in, u64 K) {
 	return subst(out, P, 32);
 }
 
-u64 des(u64 in, u64 key) {
-	u64 L, R, L0, R0, out;
+u64 des(u64 in, u64 key, int type = 1) {
+	u64 L, R, L0, R0, out, j;
 	genkey(key);
 	in = subst(in, IP, 64);
 	L0 = in >> 32 << 32;
 	R0 = in << 32;
-	for (int i = 0; i < NR; i++) {
+	j = type == 1 ? 0 : NR - 1;
+	for (int i = 0; i < NR; i++, j += type) {
 		L = R0;
-		R = L0 ^ f(R0, K[i]);
+		R = L0 ^ f(R0, K[j]);
 		L0 = L; R0 = R;
-		//disp(L); disp(R);
 	}
 	out = R | L >> 32;
 	out = subst(out, FP, 64);
@@ -208,7 +208,8 @@ u64 des(u64 in, u64 key) {
 }
 
 int main() {
-	u64 res = des(0, 0);
+	u64 res = des(1, 1);
 	printf("%lx\n", res);
+	printf("%lx\n", des(res, 1, -1));
 	return 0;
 }
