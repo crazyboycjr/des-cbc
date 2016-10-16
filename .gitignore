@@ -1,3 +1,51 @@
 *~
-*.swp
+*.sw?
 *.zip
+
+# Object files
+*.o
+
+# Libraries
+#*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+#*.dll
+*.so
+*.so.*
+#*.dylib
+
+# Autotools
+/autom4te.cache/
+/aclocal.m4
+/ar-lib
+/compile
+/configure
+/config.guess
+/config.h.in
+/config.sub
+/depcomp
+/install-sh
+/libtool
+/ltmain.sh
+/missing
+/stamp-h1
+.deps/
+Makefile.in
+autoscan.log
+
+# Configure output
+/config.h
+/config.log
+/config.status
+Makefile
+
+# Libtool copies of m4 files
+/m4/libtool.m4
+/m4/lt*.m4
+
+# patch(1) remnants
+*.orig
+*.rej
