@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([des-cbc], [0.1.0], [crazyboycjr@gmail.com])
+AC_INIT([des-cbc], [0.1], [crazyboycjr@gmail.com])
 AC_CONFIG_SRCDIR([cbc.cpp])
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([-Wall foreign])
