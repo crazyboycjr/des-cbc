@@ -1,13 +1,16 @@
 #pragma once
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
 #include <cstdint>
+#include <cassert>
 
 using namespace std;
-
-#define DEBUG
 
 // Every int type in this program are deal with BigEndian, 
 // which means the leftmost is the 0th bit and the rightmost
@@ -31,8 +34,7 @@ void __disp(const char *name, u64 x, int b = 8) {
 	puts("\n");
 }
 
-#define TRACE
-#ifdef TRACE
+#ifdef DEBUG
 #define trace(...) __f(#__VA_ARGS__, __VA_ARGS__)
 const char *nextok(const char *__restrict s) {
 	const char *e = s + strlen(s);
@@ -56,7 +58,7 @@ void __f(const char *names, Arg1 &&arg1, Args &&... args) {
 }
 #else
 #define trace(...)
-#endif
+#endif // DEBUG
 
-#endif
+#endif // DEBUG
 

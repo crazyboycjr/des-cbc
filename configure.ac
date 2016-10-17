@@ -26,4 +26,14 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 
-AC_OUTPUT(Makefile)
+# Extra Functionalities
+AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],
+			  [build with additional debugging code]),
+			  [CPPFLAGS='-g'; AC_DEFINE([DEBUG], [], [Debugging])])
+
+# DES Number of Rounds
+AC_DEFINE([NR], [16], [DES Number of Rounds])
+
+AC_CONFIG_FILES([Makefile])
+
+AC_OUTPUT

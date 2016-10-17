@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-#define NR 16 // rounds
+//#define NR 16 // rounds
 
 // I recommend to refer this page:
 // https://en.wikipedia.org/wiki/DES_supplementary_material

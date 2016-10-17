@@ -55,10 +55,11 @@ u64 des(u64 in, u64 key, int type = 1) {
 	out = subst(out, FP, 64);
 	return out;
 }
-
+/*
 int main() {
 	u64 res = des(1, 1);
 	printf("%lx\n", res);
 	printf("%lx\n", des(res, 1, -1));
 	return 0;
 }
+*/
