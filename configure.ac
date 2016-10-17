@@ -26,6 +26,10 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 
+# Builtin functions - required since I am lazy :)
+AX_GCC_BUILTIN(__builtin_bswap32)
+AX_GCC_BUILTIN(__builtin_bswap64)
+
 # Extra Functionalities
 AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],
 			  [build with additional debugging code]),

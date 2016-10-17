@@ -25,7 +25,7 @@ typedef uint8_t u8;
 #include <iostream>
 
 #define disp(...) __disp(#__VA_ARGS__, __VA_ARGS__)
-void __disp(const char *name, u64 x, int b = 8) {
+inline void __disp(const char *name, u64 x, int b = 8) {
 	printf("%s:", name);
 	for (int i = 0; i < 64; i++) {
 		if (i % b == 0) putchar('\n');
@@ -34,9 +34,8 @@ void __disp(const char *name, u64 x, int b = 8) {
 	puts("\n");
 }
 
-#ifdef DEBUG
 #define trace(...) __f(#__VA_ARGS__, __VA_ARGS__)
-const char *nextok(const char *__restrict s) {
+inline const char *nextok(const char *__restrict s) {
 	const char *e = s + strlen(s);
 	int top = 0;
 	for (; s < e; s++) {
@@ -56,9 +55,9 @@ void __f(const char *names, Arg1 &&arg1, Args &&... args) {
 	cerr.write(names, comma - names) << " : " << arg1 << " | ";
 	__f(comma + 1, args...);
 }
+
 #else
 #define trace(...)
-#endif // DEBUG
-
+#define disp(...)
 #endif // DEBUG
 

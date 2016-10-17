@@ -39,7 +39,7 @@ static inline u64 f(u64 in, u64 K) {
 	return subst(out, P, 32);
 }
 
-u64 des(u64 in, u64 key, int type = 1) {
+u64 des(u64 in, u64 key, int type) {
 	u64 L, R, L0, R0, out, j;
 	genkey(key);
 	in = subst(in, IP, 64);
