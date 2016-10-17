@@ -14,7 +14,7 @@ static inline u64 subst(u64 in, const u8 *t, int len) {
 // This macro implement cycle-shift for 28bit
 #define SHIFT(x, w) ((x & (w + 1) << 62) >> 26 | x << w)
 
-static inline void genkey(u64 key) {
+void genkey(u64 key) {
 	u64 C, D;
 	key = subst(key, PC1, 56);
 	C = key & 0xfffffffll << 36;
@@ -41,7 +41,7 @@ static inline u64 f(u64 in, u64 K) {
 
 u64 des(u64 in, u64 key, int type) {
 	u64 L, R, L0, R0, out, j;
-	genkey(key);
+	//genkey(key);
 	in = subst(in, IP, 64);
 	L0 = in >> 32 << 32;
 	R0 = in << 32;

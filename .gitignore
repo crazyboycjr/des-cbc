@@ -2,6 +2,8 @@
 *.sw?
 *.zip
 
+cbc
+
 # Object files
 *.o
 

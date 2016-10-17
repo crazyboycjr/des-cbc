@@ -10,6 +10,8 @@ int encrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 
 	u64 b; // cur block
 
+	genkey(key);
+
 	fseek(ifp, 0, SEEK_END);
 	size_t fsz = ftell(ifp), tsz = (fsz - 1) % 8 + 1;
 
@@ -20,20 +22,17 @@ int encrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 		b = __builtin_bswap64(b);
 		if (pos >= (fsz >> 3 << 3)) {
 			iv = b = des((b & MSM(tsz)) ^ iv, key);
-			printf("%lx\n", b);
 			b = __builtin_bswap64(b);
 			fwrite(&b, 8, 1, ofp);
 
 			break;
 		} else {
 			iv = b = des(b ^ iv, key);
-			printf("%lx\n", b);
 			b = __builtin_bswap64(b);
 			fwrite(&b, 8, 1, ofp);
 		}
 	}
 	b = des((8 - tsz + 8) ^ iv, key);
-	printf("%lx\n", b);
 	b = __builtin_bswap64(b);
 	fwrite(&b, 8, 1, ofp);
 
@@ -46,6 +45,8 @@ int decrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 	FILE *ofp = fopen(ofile.c_str(), "wb");
 
 	u64 b, lb, out; // cur block, last block
+
+	genkey(key);
 
 	fseek(ifp, 0, SEEK_END);
 	size_t fsz = ftell(ifp), tsz;
@@ -68,12 +69,10 @@ int decrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 		if (pos >= (fsz >> 3 << 3)) {
 			b = des(b, key, -1);
 			out = __builtin_bswap64((b ^ iv) & MSM(tsz));
-			printf("%lx\n", (b ^ iv) & MSM(tsz));
 			fwrite(&out, tsz, 1, ofp);
 			break;
 		} else {
 			lb = des(b, key, -1);
-			printf("%lx\n", lb ^ iv);
 			out = __builtin_bswap64(lb ^ iv);
 			iv = b;
 			fwrite(&out, 8, 1, ofp);
@@ -87,7 +86,7 @@ int decrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 
 
 int main() {
-	encrypt("/tmp/f", "/tmp/fo", 0x0);
-	decrypt("/tmp/fo", "/tmp/foo", 0x0);
+	encrypt("/tmp/f", "/tmp/fo", 0x0, 0);
+	decrypt("/tmp/fo", "/tmp/foo", 0x0, 0);
 	return 0;
 }

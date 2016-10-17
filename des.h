@@ -131,4 +131,4 @@ const u8 P[] = {
 const u64 shift[] = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
 
 u64 des(u64, u64, int = 1);
-
+void genkey(u64);
