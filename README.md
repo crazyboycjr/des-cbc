@@ -1,4 +1,6 @@
 # des-cbc
+即将加入GUI...
+
 DES implemented with CBC mode
 
 Haven't done yet.
