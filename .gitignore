@@ -51,3 +51,6 @@ Makefile
 # patch(1) remnants
 *.orig
 *.rej
+
+# IDE caches
+*.user
