@@ -4,7 +4,7 @@
 using namespace std;
 
 #define MSM(sz) (1ll << 63 >> (sz) * 8 << 1)
-int encrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
+void encrypt(string ifile, string ofile, u64 key, u64 iv) {
 	FILE *ifp = fopen(ifile.c_str(), "rb");
 	FILE *ofp = fopen(ofile.c_str(), "wb");
 
@@ -40,7 +40,7 @@ int encrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 	fclose(ofp);
 }
 
-int decrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
+void decrypt(string ifile, string ofile, u64 key, u64 iv) {
 	FILE *ifp = fopen(ifile.c_str(), "rb");
 	FILE *ofp = fopen(ofile.c_str(), "wb");
 
@@ -84,9 +84,9 @@ int decrypt(string ifile, string ofile, u64 key, u64 iv = 0) {
 }
 
 
-
+/*
 int main() {
 	encrypt("/tmp/f", "/tmp/fo", 0x0, 0);
 	decrypt("/tmp/fo", "/tmp/foo", 0x0, 0);
 	return 0;
-}
+}*/

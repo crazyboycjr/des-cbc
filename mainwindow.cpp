@@ -113,6 +113,9 @@ void MainWindow::on_lineEdit_3_textEdited(const QString &arg1)
     }
 }
 
+#include <string>
+void encrypt(std::string, std::string, uint64_t, uint64_t = 0);
+
 void MainWindow::on_pushButton_4_clicked()
 {
     char key_str[8] = {0};
@@ -149,5 +152,6 @@ void MainWindow::on_pushButton_4_clicked()
     qDebug() << key;
     qDebug() << "ready to encrypt" << inFile;
     qDebug() << "output file is set to " << outFile;
-    //encrypt(inFile.toStdString(), outFile.toStdString(), key);
+    encrypt(inFile.toStdString(), outFile.toStdString(), key);
+	showText(outFile, ui->plainTextEdit_2);
 }

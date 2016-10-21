@@ -3,6 +3,11 @@
 *.zip
 
 cbc
+main
+
+# Qt temporary files
+moc_*.cc
+ui_*.h
 
 # Object files
 *.o
