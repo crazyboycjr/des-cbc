@@ -5,8 +5,11 @@ libdes_cbc_a_SOURCES=des.cpp cbc.cpp common.h des.h
 #cbc_SOURCES=cbc.cpp des.cpp des.h
 #cbc_LDADD=$(top_srcdir)/libdes.a
 
+BUILT_SOURCES=ui_mainwindow.h moc_mainwindow.cc
+
 noinst_PROGRAMS=main
-main_SOURCES=main.cpp moc_mainwindow.cc mainwindow.cpp ui_mainwindow.h
+main_SOURCES=main.cpp mainwindow.cpp ui_mainwindow.h moc_mainwindow.cc
+EXTRA_main_DEPENDENCIES=ui_mainwindow.h moc_mainwindow.cc
 main_LDADD=$(top_srcdir)/libdes-cbc.a
 main_CPPFLAGS=$(QT_CFLAGS) $(QT_LIBS) -fPIC
 
