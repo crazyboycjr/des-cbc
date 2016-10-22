@@ -9,6 +9,11 @@
 #include <cstdio>
 #include <cstring>
 
+#include <string>
+
+void encrypt(std::string, std::string, uint64_t, uint64_t = 0);
+void decrypt(std::string, std::string, uint64_t, uint64_t = 0);
+
 namespace Ui {
 class MainWindow;
 }
@@ -42,8 +47,11 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+    void on_pushButton_5_clicked();
+
 private:
     void showText(QString fileName, QPlainTextEdit *plainTextWidget);
+    uint64_t getKey();
 
     Ui::MainWindow *ui;
     QString encryptFile, decryptFile;

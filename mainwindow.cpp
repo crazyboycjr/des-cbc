@@ -113,16 +113,10 @@ void MainWindow::on_lineEdit_3_textEdited(const QString &arg1)
     }
 }
 
-#include <string>
-void encrypt(std::string, std::string, uint64_t, uint64_t = 0);
-
-void MainWindow::on_pushButton_4_clicked()
-{
+uint64_t MainWindow::getKey() {
     char key_str[8] = {0};
     uint64_t key = 0;
 
-    QString inFile = ui->lineEdit->text();
-    QString outFile = ui->lineEdit_2->text();
     QString keyQStr = ui->lineEdit_3->text();
 
     if (this->keyIsHex) {
@@ -150,8 +144,29 @@ void MainWindow::on_pushButton_4_clicked()
 
     qDebug() << keyQStr;
     qDebug() << key;
+    return key;
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    uint64_t key = getKey();
+    QString inFile = ui->lineEdit->text();
+    QString outFile = ui->lineEdit_2->text();
+
     qDebug() << "ready to encrypt" << inFile;
     qDebug() << "output file is set to " << outFile;
     encrypt(inFile.toStdString(), outFile.toStdString(), key);
 	showText(outFile, ui->plainTextEdit_2);
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    uint64_t key = getKey();
+    QString inFile = ui->lineEdit_2->text();
+    QString outFile = ui->lineEdit->text();
+
+    qDebug() << "ready to decrypt" << inFile;
+    qDebug() << "output file is set to " << outFile;
+    decrypt(inFile.toStdString(), outFile.toStdString(), key);
+	showText(outFile, ui->plainTextEdit);
 }
