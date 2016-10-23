@@ -12,6 +12,10 @@ void encrypt(string ifile, string ofile, u64 key, u64 iv) {
 
 	genkey(key);
 
+	/* Put the encrypted init vector at the first block */
+	u64 eiv = __builtin_bswap64(des(iv, key));
+	fwrite(&eiv, 8, 1, ofp);
+
 	fseek(ifp, 0, SEEK_END);
 	size_t fsz = ftell(ifp), tsz = (fsz - 1) % 8 + 1;
 
@@ -32,6 +36,8 @@ void encrypt(string ifile, string ofile, u64 key, u64 iv) {
 			fwrite(&b, 8, 1, ofp);
 		}
 	}
+
+	/* Append an extra block indicates the bytes of padding */
 	b = des((8 - tsz + 8) ^ iv, key);
 	b = __builtin_bswap64(b);
 	fwrite(&b, 8, 1, ofp);
@@ -48,6 +54,11 @@ void decrypt(string ifile, string ofile, u64 key, u64 iv) {
 
 	genkey(key);
 
+	/* 
+	 * Read the last block of the ciphertext and calcuate the real size 
+	 * fsz: real size of decrypted plaintext
+	 * tsz: size of the last block
+	 */
 	fseek(ifp, 0, SEEK_END);
 	size_t fsz = ftell(ifp), tsz;
 	fseek(ifp, -16, SEEK_END);
@@ -57,11 +68,17 @@ void decrypt(string ifile, string ofile, u64 key, u64 iv) {
 	tsz = __builtin_bswap64(tsz);
 	tsz = des(tsz, key, -1) ^ lb;
 	trace(tsz);
-	fsz -= tsz;
+	fsz -= tsz + 8;
 	tsz = fsz % 8;
 	trace(fsz, tsz);
 
 	fseek(ifp, 0, SEEK_SET);
+
+	/* Read the first block to get iv */
+	fread(&iv, 8, 1, ifp);
+	iv = des(__builtin_bswap64(iv), key, -1);
+
+	trace(iv);
 
 	for (size_t sz, pos = 0; pos < fsz; pos += 8) {
 		sz = fread(&b, 8, 1, ifp);

@@ -5,6 +5,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+	srand(unsigned(time(0)));
+
     ui->setupUi(this);
     this->setFixedSize(this->size());
     ui->plainTextEdit->document()->setDefaultFont(QFont("monospace"));
@@ -59,7 +61,28 @@ void MainWindow::on_radioButton_clicked()
     this->keyIsHex = false;
 }
 
+bool MainWindow::testFile(QString fileName, QPlainTextEdit *plainTextWidget) {
+	char errMsg[] = "filename invalid or not writeable.";
+	qDebug() << QFile::exists(fileName);
+
+	if (!(QFile::exists(fileName)
+			&& (QFile::permissions(fileName) | QFileDevice::WriteUser))) {
+		qDebug() << QString(errMsg);
+
+		if (plainTextWidget != nullptr) {
+			plainTextWidget->document()->setPlainText(errMsg);
+		}
+		return false;
+	}
+	return true;
+}
+
 void MainWindow::showText(QString fileName, QPlainTextEdit *plainTextWidget) {
+	if (!QFile::exists(fileName)) {
+		plainTextWidget->document()->setPlainText("");
+		return;
+	}
+
     FILE *fin = fopen(fileName.toStdString().c_str(), "rb");
     if (fin == nullptr) {
         qDebug() << "fin is null";
@@ -69,6 +92,11 @@ void MainWindow::showText(QString fileName, QPlainTextEdit *plainTextWidget) {
     int bound = 128, count = 0;
     char str[16];
     char buf[16 * 128];
+
+	fseek(fin, 0, SEEK_END);
+	long sz = ftell(fin);
+	fseek(fin, 0, SEEK_SET);
+
     while (fread(str, 8, 1, fin), count++ < bound) {
         int len = 0;
         for (int i = 0; i < 8; i++)
@@ -79,6 +107,7 @@ void MainWindow::showText(QString fileName, QPlainTextEdit *plainTextWidget) {
         len += sprintf(buf + len, "|\n");
         plainTextWidget->document()->setPlainText(
                     plainTextWidget->toPlainText() + QString(buf));
+		if ((sz -= 8) <= 0) break;
     }
 }
 
@@ -155,7 +184,14 @@ void MainWindow::on_pushButton_4_clicked()
 
     qDebug() << "ready to encrypt" << inFile;
     qDebug() << "output file is set to " << outFile;
-    encrypt(inFile.toStdString(), outFile.toStdString(), key);
+
+	if (!testFile(inFile, ui->plainTextEdit))
+		return;
+
+	/* Generate initial vector */
+	uint64_t iv = (uint64_t)rand() << 32 | rand();
+
+    encrypt(inFile.toStdString(), outFile.toStdString(), key, iv);
 	showText(outFile, ui->plainTextEdit_2);
 }
 
@@ -167,6 +203,10 @@ void MainWindow::on_pushButton_5_clicked()
 
     qDebug() << "ready to decrypt" << inFile;
     qDebug() << "output file is set to " << outFile;
+	
+	if (!testFile(inFile, ui->plainTextEdit))
+		return;
+
     decrypt(inFile.toStdString(), outFile.toStdString(), key);
 	showText(outFile, ui->plainTextEdit);
 }
