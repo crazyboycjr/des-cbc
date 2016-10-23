@@ -56,7 +56,7 @@ AC_ARG_ENABLE([debug], AS_HELP_STRING([--enable-debug],
 			  [CPPFLAGS='-g'; AC_DEFINE([DEBUG], [], [Debugging])])
 
 # DES Number of Rounds
-AC_DEFINE([NR], [16], [DES Number of Rounds])
+AC_DEFINE([NR], [6], [DES Number of Rounds])
 
 AC_CONFIG_FILES([Makefile])
 
