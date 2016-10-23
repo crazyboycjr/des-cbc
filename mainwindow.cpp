@@ -187,6 +187,8 @@ void MainWindow::on_pushButton_4_clicked()
 
 	if (!testFile(inFile, ui->plainTextEdit))
 		return;
+	if (outFile.length() == 0)
+		return;
 
 	/* Generate initial vector */
 	uint64_t iv = (uint64_t)rand() << 32 | rand();
@@ -205,6 +207,8 @@ void MainWindow::on_pushButton_5_clicked()
     qDebug() << "output file is set to " << outFile;
 	
 	if (!testFile(inFile, ui->plainTextEdit))
+		return;
+	if (outFile.length() == 0)
 		return;
 
     decrypt(inFile.toStdString(), outFile.toStdString(), key);
