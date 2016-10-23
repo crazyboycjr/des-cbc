@@ -8,6 +8,8 @@
 
 #include <cstdio>
 #include <cstring>
+#include <cstdlib>
+#include <ctime>
 
 #include <string>
 
@@ -52,6 +54,7 @@ private slots:
 private:
     void showText(QString fileName, QPlainTextEdit *plainTextWidget);
     uint64_t getKey();
+	bool testFile(QString, QPlainTextEdit * = nullptr);
 
     Ui::MainWindow *ui;
     QString encryptFile, decryptFile;
