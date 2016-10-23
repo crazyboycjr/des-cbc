@@ -69,6 +69,11 @@ void MainWindow::showText(QString fileName, QPlainTextEdit *plainTextWidget) {
     int bound = 128, count = 0;
     char str[16];
     char buf[16 * 128];
+
+	fseek(fin, 0, SEEK_END);
+	long sz = ftell(fin);
+	fseek(fin, 0, SEEK_SET);
+
     while (fread(str, 8, 1, fin), count++ < bound) {
         int len = 0;
         for (int i = 0; i < 8; i++)
@@ -79,6 +84,7 @@ void MainWindow::showText(QString fileName, QPlainTextEdit *plainTextWidget) {
         len += sprintf(buf + len, "|\n");
         plainTextWidget->document()->setPlainText(
                     plainTextWidget->toPlainText() + QString(buf));
+		if ((sz -= 8) <= 0) break;
     }
 }
 
